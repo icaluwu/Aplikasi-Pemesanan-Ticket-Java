@@ -11,15 +11,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class FilmManagementPanel extends JPanel {
+
     private JTable filmTable;
     private DefaultTableModel tableModel;
     private JButton addButton, updateButton, deleteButton;
 
     public FilmManagementPanel() {
         setLayout(new BorderLayout());
-        
+
         // Table setup
-        String[] columns = {"ID", "Title", "Genre", "Duration", "Director", "Synopsis"};
+        String[] columns = {"No", "ID", "Title", "Genre", "Duration", "Director", "Synopsis"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -27,22 +28,25 @@ public class FilmManagementPanel extends JPanel {
             }
         };
         filmTable = new JTable(tableModel);
+        filmTable.getColumnModel().getColumn(1).setMinWidth(0);
+        filmTable.getColumnModel().getColumn(1).setMaxWidth(0);
+        filmTable.getColumnModel().getColumn(1).setWidth(0);
         add(new JScrollPane(filmTable), BorderLayout.CENTER);
-        
+
         // Control buttons
         JPanel buttonPanel = new JPanel();
         addButton = new JButton("Add Film");
         updateButton = new JButton("Update Film");
         deleteButton = new JButton("Delete Film");
-        
+
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
         add(buttonPanel, BorderLayout.SOUTH);
-        
+
         // Load data
         loadFilms();
-        
+
         // Event handlers
         addButton.addActionListener(e -> showAddFilmDialog());
         updateButton.addActionListener(e -> showUpdateFilmDialog());
@@ -53,8 +57,10 @@ public class FilmManagementPanel extends JPanel {
         try {
             List<Film> films = AdminController.getAllFilms();
             tableModel.setRowCount(0);
+            int no = 1;
             for (Film film : films) {
                 tableModel.addRow(new Object[]{
+                    no++,
                     film.getId(),
                     film.getTitle(),
                     film.getGenre(),
@@ -68,19 +74,19 @@ public class FilmManagementPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Error loading films: " + e.getMessage());
         }
     }
-    
+
     private void showAddFilmDialog() {
         JDialog dialog = new JDialog();
         dialog.setTitle("Add New Film");
         dialog.setLayout(new GridLayout(6, 2, 10, 10));
-        
+
         JTextField titleField = new JTextField();
         JTextField genreField = new JTextField();
         JTextField durationField = new JTextField();
         JTextField directorField = new JTextField();
         JTextArea synopsisArea = new JTextArea();
         JScrollPane synopsisScroll = new JScrollPane(synopsisArea);
-        
+
         dialog.add(new JLabel("Title:"));
         dialog.add(titleField);
         dialog.add(new JLabel("Genre:"));
@@ -91,19 +97,19 @@ public class FilmManagementPanel extends JPanel {
         dialog.add(directorField);
         dialog.add(new JLabel("Synopsis:"));
         dialog.add(synopsisScroll);
-        
+
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Film film = new Film(
-                    0, // ID will be auto-generated
-                    titleField.getText(),
-                    genreField.getText(),
-                    Integer.parseInt(durationField.getText()),
-                    directorField.getText(),
-                    synopsisArea.getText()
+                        0, // ID will be auto-generated
+                        titleField.getText(),
+                        genreField.getText(),
+                        Integer.parseInt(durationField.getText()),
+                        directorField.getText(),
+                        synopsisArea.getText()
                 );
-                
+
                 AdminController.addFilm(film);
                 loadFilms();
                 dialog.dispose();
@@ -114,40 +120,40 @@ public class FilmManagementPanel extends JPanel {
                 JOptionPane.showMessageDialog(dialog, "Error: " + ex.getMessage());
             }
         });
-        
+
         dialog.add(new JLabel()); // Empty cell
         dialog.add(saveButton);
-        
+
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     private void showUpdateFilmDialog() {
         int row = filmTable.getSelectedRow();
         if (row < 0) {
             JOptionPane.showMessageDialog(this, "Please select a film to update!");
             return;
         }
-        
-        int id = (int) tableModel.getValueAt(row, 0);
-        String title = (String) tableModel.getValueAt(row, 1);
-        String genre = (String) tableModel.getValueAt(row, 2);
-        int duration = (int) tableModel.getValueAt(row, 3);
-        String director = (String) tableModel.getValueAt(row, 4);
-        String synopsis = (String) tableModel.getValueAt(row, 5);
-        
+
+        int id = (int) tableModel.getValueAt(row, 1);
+        String title = (String) tableModel.getValueAt(row, 2);
+        String genre = (String) tableModel.getValueAt(row, 3);
+        int duration = (int) tableModel.getValueAt(row, 4);
+        String director = (String) tableModel.getValueAt(row, 5);
+        String synopsis = (String) tableModel.getValueAt(row, 6);
+
         JDialog dialog = new JDialog();
         dialog.setTitle("Update Film");
         dialog.setLayout(new GridLayout(6, 2, 10, 10));
-        
+
         JTextField titleField = new JTextField(title);
         JTextField genreField = new JTextField(genre);
         JTextField durationField = new JTextField(String.valueOf(duration));
         JTextField directorField = new JTextField(director);
         JTextArea synopsisArea = new JTextArea(synopsis);
         JScrollPane synopsisScroll = new JScrollPane(synopsisArea);
-        
+
         dialog.add(new JLabel("Title:"));
         dialog.add(titleField);
         dialog.add(new JLabel("Genre:"));
@@ -158,19 +164,19 @@ public class FilmManagementPanel extends JPanel {
         dialog.add(directorField);
         dialog.add(new JLabel("Synopsis:"));
         dialog.add(synopsisScroll);
-        
+
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             try {
                 Film film = new Film(
-                    id,
-                    titleField.getText(),
-                    genreField.getText(),
-                    Integer.parseInt(durationField.getText()),
-                    directorField.getText(),
-                    synopsisArea.getText()
+                        id,
+                        titleField.getText(),
+                        genreField.getText(),
+                        Integer.parseInt(durationField.getText()),
+                        directorField.getText(),
+                        synopsisArea.getText()
                 );
-                
+
                 AdminController.updateFilm(film);
                 loadFilms();
                 dialog.dispose();
@@ -181,40 +187,43 @@ public class FilmManagementPanel extends JPanel {
                 JOptionPane.showMessageDialog(dialog, "Error: " + ex.getMessage());
             }
         });
-        
+
         dialog.add(new JLabel()); // Empty cell
         dialog.add(saveButton);
-        
+
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     private void deleteFilm() {
-        int row = filmTable.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a film to delete!");
-            return;
-        }
-        
-        int id = (int) tableModel.getValueAt(row, 0);
-        String title = (String) tableModel.getValueAt(row, 1);
-        
-        int confirm = JOptionPane.showConfirmDialog(
-            this, 
-            "Are you sure you want to delete '" + title + "'?",
-            "Confirm Delete",
-            JOptionPane.YES_NO_OPTION
-        );
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
+        try {
+            int row = filmTable.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Please select a film to delete!");
+                return;
+            }
+
+            String title = (String) tableModel.getValueAt(row, 2);
+            List<Film> films = AdminController.getAllFilms();
+            int id = (int) tableModel.getValueAt(row, 1); // ID ada di kolom pertama
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to delete '" + title + "'?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
                 AdminController.deleteFilm(id);
                 loadFilms();
                 JOptionPane.showMessageDialog(this, "Film deleted successfully!");
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
             }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

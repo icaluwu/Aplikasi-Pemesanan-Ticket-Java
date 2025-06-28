@@ -126,4 +126,18 @@ public class AdminController {
             stmt.executeUpdate();
         }
     }
+    
+    public static boolean isScheduleUsed(int scheduleId) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM bookings WHERE schedule_id = ?";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, scheduleId);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+        return false;
+    }
+}
+
 }
