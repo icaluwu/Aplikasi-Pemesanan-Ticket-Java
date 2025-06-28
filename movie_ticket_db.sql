@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2025 at 02:36 PM
+-- Generation Time: Jun 28, 2025 at 02:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,8 +41,8 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`id`, `user_id`, `schedule_id`, `num_tickets`, `total_price`, `booking_time`) VALUES
-(1, 2, 2, 1, 50000.00, '2025-06-23 19:31:50'),
-(2, 2, 2, 3, 150000.00, '2025-06-23 19:31:56');
+(8, 2, 2, 1, 50000.00, '2025-06-28 12:33:32'),
+(9, 2, 2, 2, 100000.00, '2025-06-28 12:33:38');
 
 -- --------------------------------------------------------
 
@@ -65,9 +65,10 @@ CREATE TABLE `films` (
 
 INSERT INTO `films` (`id`, `title`, `genre`, `duration`, `director`, `synopsis`) VALUES
 (1, 'Avengers: Endgame', 'Action', 181, 'Russo Brothers', 'Superheroes battle Thanos'),
-(2, 'Inception', 'Sci-Fi', 148, 'Christopher Nolan', 'Dream within a dream'),
-(3, 'Wenomechainsama', 'Fantasy', 58, 'Budie Arie', 'Lorem ipsum'),
-(4, 'Lao Gan Man', 'Sitfose', 66, 'Fuyung Hai', 'lao gan ma');
+(4, 'Lao Gan Mansdasd', 'Sitfose', 66, 'Fuyung Hai', 'lao gan ma'),
+(7, 'Sonang:', ' Comedy', 120, 'Rapi', 'Rais belok'),
+(8, 'asdasd', 'adsd', 122, 'asdsd', 'sdssds'),
+(10, 'hjk', 'uhu', 77, 'kh', 'jk');
 
 -- --------------------------------------------------------
 
@@ -88,10 +89,8 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`id`, `film_id`, `showtime`, `price`, `available_seats`) VALUES
-(2, 1, '2023-12-25 21:30:00', 50000.00, 80),
-(3, 2, '2023-12-26 18:00:00', 40000.00, 120),
-(4, 4, '2023-12-31 19:00:00', 8888.00, 78),
-(6, 3, '2023-12-31 19:00:00', 50000.00, 99);
+(2, 1, '2023-12-25 21:30:00', 50000.00, 77),
+(4, 4, '2023-12-31 19:00:00', 8888.00, 77);
 
 -- --------------------------------------------------------
 
@@ -112,7 +111,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
 (1, 'admin', 'admin123', 'admin'),
-(2, 'user1', 'user123', 'user');
+(2, 'user1', 'user123', 'user'),
+(3, 'sonang', '$2y$10$Ibdqc1J4ddoHz2fuaDGoO.zpuvkKucQ.u7JncsQ55bx', 'user');
 
 --
 -- Indexes for dumped tables
@@ -154,25 +154,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `films`
 --
 ALTER TABLE `films`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
